@@ -78,8 +78,22 @@ public class Line implements AsciiBlock {
    *    false otherwise.
    */
   public boolean eqv(AsciiBlock other) {
-    return false;       // STUB
+    return (other instanceof Line) 
+        && (this.eqv((Line) other));
   } // eqv(AsciiBlock)
+
+  /**
+   * Determine if another line is equivalent to this line.
+   *
+   * @param other
+   *   The line to compare.
+   *
+   * @return true if the two blocks are structurally equivalent and
+   *    false otherwise.
+   */
+  public boolean eqv(Line other) {
+    return this.line.equals(other.line);
+  } // eqv(Line)
 
   // +---------------+-----------------------------------------------
   // | Other methods |
