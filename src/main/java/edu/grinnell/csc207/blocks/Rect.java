@@ -98,7 +98,7 @@ public class Rect implements AsciiBlock {
    *    false otherwise.
    */
   public boolean eqv(AsciiBlock other) {
-    return false;       // STUB
+    return (other instanceof Rect) && (this.eqv((Rect) other));
   } // eqv(AsciiBlock)
 
   /**
@@ -112,7 +112,8 @@ public class Rect implements AsciiBlock {
    *    character; return false otherwise.
    */
   public boolean eqv(Rect other) {
-    return (other.
+    return (this.height == other.height) && (this.row.equals(other.row));
+  } // eqv(Rect)
 
   // +---------------+-----------------------------------------------
   // | Other methods |
