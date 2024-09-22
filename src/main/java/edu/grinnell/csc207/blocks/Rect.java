@@ -20,16 +20,6 @@ public class Rect implements AsciiBlock {
    */
   int height;
 
-  /**
-   * The left block.
-   */
-  AsciiBlock left;
-
-  /**
-   * The right block.
-   */
-  AsciiBlock right;
-
   // +--------------+------------------------------------------------------
   // | Constructors |
   // +--------------+
@@ -110,6 +100,19 @@ public class Rect implements AsciiBlock {
   public boolean eqv(AsciiBlock other) {
     return false;       // STUB
   } // eqv(AsciiBlock)
+
+  /**
+   * Determine if another rectangle is structuralloy equivalent to this
+   * block.
+   *
+   * @param other
+   *   The rectangle to compare to this block.
+   *
+   * @return true if the other rectangle has the same width, height, and
+   *    character; return false otherwise.
+   */
+  public boolean eqv(Rect other) {
+    return (other.
 
   // +---------------+-----------------------------------------------
   // | Other methods |
