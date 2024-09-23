@@ -57,6 +57,29 @@ public class VComp implements AsciiBlock {
     this.blocks = Arrays.copyOf(blocksToCompose, blocksToCompose.length);
   } // VComp(HAlignment, AsciiBLOCK[])
 
+  // +---------+-----------------------------------------------------
+  // | Helpers |
+  // +---------+
+
+  /**
+   * Align one row.
+   *
+   * @param str
+   *   A string.
+   */
+  public String alignRow(String str) {
+    String result = "";
+    int diff = this.width() - str.length();
+    if (HAlignment.LEFT == this.align) {
+      result = str + " ".repeat(diff);
+    } else if (HAlignment.CENTER == this.align) {
+      result = " ".repeat(diff / 2) + str + " ".repeat(diff - diff / 2);
+    } else {
+      result = " ".repeat(diff) + str;
+    } // if/else
+    return result;
+  } // alignRow(String)
+
   // +---------+-----------------------------------------------------------
   // | Methods |
   // +---------+
@@ -66,13 +89,23 @@ public class VComp implements AsciiBlock {
    *
    * @param i the number of the row
    *
-   * @return row i.
+   * @return the contents row i.
    *
    * @exception Exception
    *   if i is outside the range of valid rows.
    */
   public String row(int i) throws Exception {
-    return "";  // STUB
+    if ((i < 0) || (i >= this.height())) {
+      throw new Exception("Invalid row: " + i);
+    } // if
+    for (AsciiBlock block : blocks) {
+      int blockHeight = block.height();
+      if (i < blockHeight) {
+        return alignRow(block.row(i));
+      } // if
+      i = i - blockHeight;
+    } // for
+    throw new Exception("Ran out of blocks.");
   } // row(int)
 
   /**
@@ -81,7 +114,11 @@ public class VComp implements AsciiBlock {
    * @return the number of rows
    */
   public int height() {
-    return 0;   // STUB
+    int height = 0;
+    for (AsciiBlock block : blocks) {
+      height = height + block.height();
+    } // for
+    return height;
   } // height()
 
   /**
@@ -90,7 +127,11 @@ public class VComp implements AsciiBlock {
    * @return the number of columns
    */
   public int width() {
-    return 0;   // STUB
+    int width = 0;
+    for (AsciiBlock block : blocks) {
+      width = Math.max(width, block.width());
+    } // for
+    return width;
   } // width()
 
   /**
