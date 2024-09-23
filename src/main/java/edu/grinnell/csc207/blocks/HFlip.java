@@ -30,6 +30,45 @@ public class HFlip implements AsciiBlock {
     this.block = original;
   } // HFlip(AsciiBlock)
 
+  // +---------+-----------------------------------------------------
+  // | Helpers |
+  // +---------+
+
+  /**
+   * Swap two characters in a character array.
+   *
+   * @param chars
+   *   The array.
+   * @param i
+   *   The index of one of the characters (0 &lt;= i &lt; arr.length)
+   * @param j
+   *   The index of the other character (0 &lt;= j &lt; arr.length)
+   */
+  void swap(char[] chars, int i, int j) {
+    char tmp = chars[i];
+    chars[i] = chars[j];
+    chars[j] = tmp;
+  } // swap(char[])
+
+  /**
+   * Reverse a string.
+   *
+   * @param str
+   *   The string to reverse.
+   *
+   * @return
+   *   The reversed string.
+   */
+  String reverse(String str) {
+    char[] chars = str.toCharArray();
+    int lb = 0;
+    int ub = chars.length - 1;
+    while (lb < ub) {
+      swap(chars, lb++, ub--);
+    } // while
+    return new String(chars);
+  } // reverse(String)
+
   // +---------+-----------------------------------------------------------
   // | Methods |
   // +---------+
@@ -45,7 +84,10 @@ public class HFlip implements AsciiBlock {
    *   If the row is invalid.
    */
   public String row(int i) throws Exception {
-    throw new Exception("Not yet implemented"); // STUB
+    if ((i < 0) || (i >= this.height())) {
+      throw new Exception("Invalid row: " + i);
+    } // if
+    return reverse(this.block.row(i));
   } // row(int)
 
   /**
@@ -54,7 +96,7 @@ public class HFlip implements AsciiBlock {
    * @return the number of rows
    */
   public int height() {
-    return 0;   // STUB
+    return this.block.height();
   } // height()
 
   /**
@@ -63,7 +105,7 @@ public class HFlip implements AsciiBlock {
    * @return the number of columns
    */
   public int width() {
-    return 0;   // STUB
+    return this.block.width();
   } // width()
 
   /**
@@ -76,6 +118,20 @@ public class HFlip implements AsciiBlock {
    *    false otherwise.
    */
   public boolean eqv(AsciiBlock other) {
-    return false;       // STUB
+    return (other instanceof HFlip) && this.eqv((HFlip) other);
   } // eqv(AsciiBlock)
+
+  /**
+   * Determine if another hflipped block is structurally equivalent
+   * to this block.
+   *
+   * @param other
+   *   The HFlip to compare to this block.
+   *
+   * @return true if they have equivalent underlying blocks and false
+   *   otherwise.
+   */
+  public boolean eqv(HFlip other) {
+    return this.block.eqv(other.block);
+  } // eqv(HFlip)
 } // class HFlip
