@@ -56,6 +56,42 @@ public class HComp implements AsciiBlock {
     this.blocks = Arrays.copyOf(blocksToCompose, blocksToCompose.length);
   } // HComp(Alignment, AsciiBLOCK[])
 
+  // +---------+-----------------------------------------------------
+  // | Helpers |
+  // +---------+
+
+  /**
+   * Compute part of a row from one block.
+   *
+   * @param block
+   *   The block to look at.
+   * @param i
+   *   The row in the composition.
+   * @param height
+   *   The height of the composition.
+   *
+   * @return the appropriate row of block or an appropriate width
+   *   set of spaces.
+   */
+  public String subrow(AsciiBlock block, int i, int height) {
+    int blockHeight = block.height();
+    int offset = 0;
+    if (VAlignment.CENTER == this.align) {
+      offset = (height - blockHeight) / 2;
+    } else if (VAlignment.BOTTOM == this.align) {
+      offset = height - blockHeight;
+    } // if/else
+    int newi = i - offset;
+    if ((newi < 0) || (newi >= blockHeight)) {
+      return " ".repeat(block.width());
+    } // if
+    try {
+      return block.row(newi);
+    } catch (Exception e) {
+      return "!". repeat(block.width());
+    } // try/catch
+  } // subrow()
+
   // +---------+-----------------------------------------------------------
   // | Methods |
   // +---------+
@@ -71,7 +107,15 @@ public class HComp implements AsciiBlock {
    *   if i is outside the range of valid rows.
    */
   public String row(int i) throws Exception {
-    return "";  // STUB
+    int height = this.height();
+    StringBuilder result = new StringBuilder();
+    if ((i < 0) || (i >= height)) {
+      throw new Exception("Invalid row: " + i);
+    } // if
+    for (AsciiBlock block : blocks) {
+      result.append(subrow(block, i, height));
+    } // for
+    return result.toString();
   } // row(int)
 
   /**
@@ -80,7 +124,11 @@ public class HComp implements AsciiBlock {
    * @return the number of rows
    */
   public int height() {
-    return 0;   // STUB
+    int height = 0;
+    for (AsciiBlock block : blocks) {
+      height = Math.max(height, block.height());
+    } // for
+    return height;
   } // height()
 
   /**
@@ -89,7 +137,11 @@ public class HComp implements AsciiBlock {
    * @return the number of columns
    */
   public int width() {
-    return 0;   // STUB
+    int width = 0;
+    for (AsciiBlock block : blocks) {
+      width += block.width();
+    } // for
+    return width;
   } // width()
 
   /**
