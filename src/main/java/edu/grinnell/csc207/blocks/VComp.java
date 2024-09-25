@@ -144,6 +144,34 @@ public class VComp implements AsciiBlock {
    *    false otherwise.
    */
   public boolean eqv(AsciiBlock other) {
-    return false;       // STUB
+    return (other instanceof VComp) && this.eqv((VComp) other);
   } // eqv(AsciiBlock)
+
+  /**
+   * Determine if another vertical composition is structurally equivalent
+   * to this vertical composition.
+   *
+   * @param other
+   *   The VComp to compare to this VComp
+   *
+   * @return true if the two blocks have the same alignment and the same
+   *   sets of subblocks.
+   */
+  public boolean eqv(VComp other) {
+    // Make sure that we have the same alignment.
+    if (this.align != other.align) {
+      return false;
+    } // if
+    // Make sure that we have the same number of blocks.
+    if (this.blocks.length != other.blocks.length) {
+      return false;
+    } // if
+    // Make sure that all the subblocks are equivalent.
+    for (int i = 0; i < this.blocks.length; i++) {
+      if (!AsciiBlock.eqv(this.blocks[i], other.blocks[i])) {
+        return false;
+      } // if
+    } // for
+    return true;
+  } // eqv(VComp)
 } // class VComp

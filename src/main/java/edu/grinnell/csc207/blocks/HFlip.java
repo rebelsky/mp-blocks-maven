@@ -132,6 +132,6 @@ public class HFlip implements AsciiBlock {
    *   otherwise.
    */
   public boolean eqv(HFlip other) {
-    return this.block.eqv(other.block);
+    return AsciiBlock.eqv(this.block, other.block);
   } // eqv(HFlip)
 } // class HFlip

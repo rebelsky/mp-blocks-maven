@@ -154,6 +154,36 @@ public class HComp implements AsciiBlock {
    *    false otherwise.
    */
   public boolean eqv(AsciiBlock other) {
-    return false;       // STUB
+    return (other instanceof HComp) && this.eqv((HComp) other);
   } // eqv(AsciiBlock)
+
+  /**
+   * Determine if another horizontal composition is structurally
+   * equivalent tot his horizontal composition.
+   *
+   * @param other
+   *   The HComp to compare to this block
+   *
+   * @return true if the other HComp has the same alignment, the same
+   *   number of composed blocks, and equivalent composed blocks
+   */
+  public boolean eqv(HComp other) {
+    // Compare alignments of composed blocks.
+    if (this.align != other.align) {
+      return false;
+    } // if
+    // Compare numbers of composed blocks.
+    if (this.blocks.length != other.blocks.length) {
+      return false;
+    } // if
+    // Compare individual blocks
+    for (int i = 0; i < this.blocks.length; i++) {
+      if (! AsciiBlock.eqv(this.blocks[i], other.blocks[i])) {
+        return false;
+      } // if
+    } // for
+    // All the comparisons succeeded. We're done!
+    return true;
+  } // eqv(HComp)
+
 } // class HComp
